@@ -17,6 +17,18 @@ axios.get('https://api.github.com/users/austinhuisinga')
     console.log(error);
   })
 
+  axios.get('https://api.github.com/users/austinhuisinga/following')
+    .then((response) => {
+      response.data.forEach(item => {
+        let newCard = cardCreator(item)
+        cards.appendChild(newCard);
+      })
+      cards.appendChild(newCard);
+    })
+    .catch((error) => {
+      console.log(error);
+    })
+
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
    data in order to use it to build your component function 
@@ -75,6 +87,24 @@ function cardCreator (obj) {
   const following = document.createElement('p');
   const bio = document.createElement('p');
 
+  card.classList.add('card');
+  cardInfo.classList.add('card-info');
+  name.classList.add('name');
+  username.classList.add('username');
+
+  userImg.src = obj.avatar_url;
+  userImg.alt = 'Github User';
+
+  name.textContent = obj.name;
+  username.textContent = obj.login;
+  location.textContent = `Location: ${obj.location}`;
+  profile.textContent = `Profile: `;
+  gitAddress.href = obj.html_url;
+  gitAddress.textContent = obj.html_url; 
+  followers.textContent = `Followers: ${obj.followers}`;
+  following.textContent = `Following: ${obj.following}`;
+  bio.textContent = `Bio: ${obj.bio}`;
+
   card.appendChild(userImg);
   card.appendChild(cardInfo);
   cardInfo.appendChild(name);
@@ -86,25 +116,6 @@ function cardCreator (obj) {
   cardInfo.appendChild(following);
   cardInfo.appendChild(bio);
 
-  card.classList.add('card');
-  cardInfo.classList.add('card-info');
-  name.classList.add('name');
-  username.classList.add('p');
-
-  userImg.src = obj.avatar_url;
-  userImg.alt = 'Github User';
-  gitAddress.href = obj.html_url;
-
-  name.textContent = obj.name;
-  username.textContent = obj.login;
-  location.textContent = obj.location;
-  gitAddress.textContent = obj.html_url;
-  followers.textContent = `Followers: ${obj.followers}`;
-  following.textContent = `Following: ${obj.following}`;
-  // bio.textContent = `Bio: ${obj.bio}`;
-  bio.textContent = obj.bio;
-
-  console.log(card);
   return card;
 }
 
